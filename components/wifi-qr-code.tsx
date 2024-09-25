@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 
 export function WifiQrCode() {
-  const [networkName, setNetworkName] = useState("ODD");
+  const [networkName, setNetworkName] = useState("");
   const [ssid, setSsid] = useState("");
   const [password, setPassword] = useState("");
   const [encryption, setEncryption] = useState("WPA");
@@ -36,7 +36,7 @@ export function WifiQrCode() {
       <div className="mb-6 flex justify-center">
         <div
           style={{ backgroundColor: boxColor }}
-          className="px-8 py-6 flex flex-col items-center rounded-lg"
+          className="px-8 py-6 flex flex-col items-center rounded-lg relative"
         >
           <h2 className="text-3xl font-bold mb-4 text-white">WIFI 접속</h2>
           {qrValue ? (
@@ -45,6 +45,9 @@ export function WifiQrCode() {
             <div className="w-[256px] h-[256px] border-2 border-dashed border-gray-300 flex items-center justify-center " />
           )}
           <p className="mt-4 text-3xl font-bold text-white">{networkName}</p>
+          <span className="absolute bottom-2 right-2 text-xs text-white opacity-70">
+            by toycrane
+          </span>
         </div>
       </div>
 
@@ -54,6 +57,7 @@ export function WifiQrCode() {
           <Input
             id="networkName"
             value={networkName}
+            placeholder="브랜드 이름을 입력하세요"
             onChange={(e) => setNetworkName(e.target.value)}
           />
         </div>
@@ -62,7 +66,7 @@ export function WifiQrCode() {
           <Label htmlFor="ssid">네트워크 이름(SSID)</Label>
           <Input
             id="ssid"
-            placeholder="Placeholder text"
+            placeholder="네트워크 이름을 입력하세요"
             value={ssid}
             onChange={(e) => setSsid(e.target.value)}
           />
@@ -73,7 +77,7 @@ export function WifiQrCode() {
           <Input
             id="password"
             type="password"
-            placeholder="Placeholder text"
+            placeholder="비밀번호를 입력하세요"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -83,12 +87,12 @@ export function WifiQrCode() {
           <Label htmlFor="encryption">암호화 유형</Label>
           <Select value={encryption} onValueChange={setEncryption}>
             <SelectTrigger>
-              <SelectValue placeholder="Selected option" />
+              <SelectValue placeholder="암호화 유형을 선택하세요" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="WPA">WPA/WPA2</SelectItem>
               <SelectItem value="WEP">WEP</SelectItem>
-              <SelectItem value="nopass">No Encryption</SelectItem>
+              <SelectItem value="nopass">암호화 없음</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -96,13 +100,19 @@ export function WifiQrCode() {
         <div>
           <Label htmlFor="boxColor">박스 배경색</Label>
           <div className="flex items-center space-x-2">
-            <input
-              type="color"
-              value={boxColor}
-              onChange={handleColorChange}
-              className="w-10 h-10 p-0 border-0 rounded-md"
-              aria-label="Select box background color"
-            />
+            <div className="relative w-8 h-8">
+              <input
+                type="color"
+                value={boxColor}
+                onChange={handleColorChange}
+                className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                aria-label="Select box background color"
+              />
+              <div
+                className="w-8 h-8 rounded-full border border-gray-300"
+                style={{ backgroundColor: boxColor }}
+              />
+            </div>
             <Input
               id="boxColor"
               value={boxColor}
@@ -112,7 +122,6 @@ export function WifiQrCode() {
           </div>
         </div>
       </div>
-
       <Button className="w-full mt-6" onClick={generateQRCode}>
         생성하기
       </Button>
